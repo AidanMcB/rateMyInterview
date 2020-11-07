@@ -5,8 +5,8 @@ import { MainPage } from './views/MainPage'
 import { CompanyList } from './views/CompanyList'
 import { CompanyProfile } from './views/CompanyProfile'
 
-import { SignUp } from './views/signup'
-import { Login } from './views/login'
+import { SignUp } from './views/SignUp'
+import { Login } from './views/Login'
 
 
 
