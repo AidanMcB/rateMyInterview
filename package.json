@@ -6,6 +6,14 @@
   "scripts": {
     "start": "triframe start"
   },
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ]
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -1,5 +1,5 @@
 import React from 'react'
-import { tether, Section, TextInput, List, Container, Heading, Button, Subheading, Appbar } from '@triframe/designer'
+import { tether, Section, TextInput, List, Container, Heading, Button, Subheading} from '@triframe/designer'
 
 
 export const MainPage = tether(function*({ Api, redirect }) {
@@ -17,12 +17,11 @@ export const MainPage = tether(function*({ Api, redirect }) {
     return (
         
         <Container>
-            <Appbar></Appbar>
             <Heading>Rate My Interview!</Heading>
             {reviews.map( review => (
                 <List.Item
                 title={review.title}
-                description={review.descritpion}
+                description={review.description}
                 onPress={() => redirect(`/companies/${review.company.id}`)}
                 />
             ))}
