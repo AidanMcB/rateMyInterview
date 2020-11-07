@@ -18,5 +18,7 @@ export class Company extends Resource {
     @hasMany
     reviews = []
 
-    
+    @hasMany({ through: company => company.reviews.user })
+    users = []
+ 
 }
