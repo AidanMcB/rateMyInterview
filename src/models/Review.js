@@ -1,5 +1,5 @@
 import { Resource } from '@triframe/core'
-import { Model, string, include }  from '@triframe/scribe'
+import { Model, string, include, integer }  from '@triframe/scribe'
 import { belongsTo } from '@triframe/scribe/dist/decorators'
 
 export class Review extends Resource {
@@ -15,8 +15,10 @@ export class Review extends Resource {
     @string
     description = ""
 
-    @belongsTo({a: "User", a: "Company"})
+    @belongsTo({a: "User"})
     user = null
+    
+    @belongsTo({a: "Company"})
     company = null
 
 }
