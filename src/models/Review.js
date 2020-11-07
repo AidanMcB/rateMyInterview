@@ -4,17 +4,16 @@ import { Resource } from "@triframe/core";
 import { Model, string, include, integer } from "@triframe/scribe";
 import { belongsTo } from "@triframe/scribe/dist/decorators";
 
-import { Resource } from "@triframe/core";
-import { Model, string, include } from "@triframe/scribe";
-import { belongsTo } from "@triframe/scribe/dist/decorators";
-
 export class Review extends Resource {
   @include(Model)
   @string
   title = "";
 
+  @string
+  title = "";
+
   @integer
-  rating = 4;
+  rating = 0;
 
   @belongsTo({ a: "User" })
   user = null;

@@ -1,23 +1,31 @@
 import React from 'react'
-import { tether, Section, TextInput, List, Container, Heading, Button } from '@triframe/designer'
+import { tether, Section, TextInput, List, Container, Heading, Button, Subheading, Appbar } from '@triframe/designer'
 
 
-export const MainPage = tether(function*({ Api }) {
+export const MainPage = tether(function*({ Api, redirect }) {
 
-    // const { Message } = Api;
+        const { Review } = Api;
 
-    // const messages = yield Message.list()
+        const reviews = yield Review.list(`
+        *,
+        company {
+            *
+        }
+    `)
 
-    // const form = yield { content: '' }
-
-    // const handleSubmit = async () => {
-    //     await Message.create({ content: form.content })
-    //     form.content = ''
-    // }
 
     return (
+        
         <Container>
-            Hello
+            <Appbar></Appbar>
+            <Heading>Rate My Interview!</Heading>
+            {reviews.map( review => (
+                <List.Item
+                title={review.title}
+                description={review.descritpion}
+                onPress={() => redirect(`/companies/${review.company.id}`)}
+                />
+            ))}
         </Container>
     )
 })  
