@@ -11,6 +11,7 @@ export const SignUp = tether(function* ({ Api, redirect }) {
         username: '',
         password: '',
         errorMessage: null
+
     }
 
     return (
@@ -44,3 +45,4 @@ export const SignUp = tether(function* ({ Api, redirect }) {
     )
 
 })
+
