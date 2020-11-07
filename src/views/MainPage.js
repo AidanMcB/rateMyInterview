@@ -5,6 +5,7 @@ import { tether, Section, TextInput, List, Container, Heading, Button, Subheadin
 export const MainPage = tether(function*({ Api, redirect }) {
 
         const { Review } = Api;
+     
 
         const reviews = yield Review.list(`
         *,
@@ -13,7 +14,7 @@ export const MainPage = tether(function*({ Api, redirect }) {
         }
     `)
 
-
+console.log(reviews[0].company)
     return (
         
         <Container>
@@ -22,7 +23,7 @@ export const MainPage = tether(function*({ Api, redirect }) {
                 <List.Item
                 title={review.title}
                 description={review.description}
-                onPress={() => redirect(`/companies/${review.company.id}`)}
+                onPress={() => redirect(`/companies/${review.company}`)}
                 />
             ))}
         </Container>
