@@ -5,6 +5,7 @@ import { tether, Section, TextInput, List, Container, Heading, Button, Subheadin
 export const MainPage = tether(function*({ Api, redirect }) {
 
         const { Review } = Api;
+     
 
         const reviews = yield Review.list(`
         *,
