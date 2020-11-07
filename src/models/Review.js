@@ -10,7 +10,7 @@ export class Review extends Resource {
     title = "" 
     
     @integer
-    rating = ""
+    rating = 0
 
     @string
     description = ""
