@@ -17,10 +17,7 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
 
     let handleSubmit = async () => {
         try {
-            await Review.create({
-                title: form.title, rating: form.rating, description: form.description,
-                userId: user.id, companyId: id
-            })
+            await Review.makeReview({ title: form.title, rating: form.rating, description: form.description, companyId: id})
         } catch (error) {
             console.log(error)
         }
@@ -30,23 +27,23 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
     return (
         <Container>
             <Heading>Write a Review</Heading>
-            <TextInput 
+            <TextInput
                 label="Title"
                 value={form.title}
-                onChange={ value => form.title = value}
+                onChange={value => form.title = value}
             />
-               <TextInput 
+            <TextInput
                 label="Rating"
                 value={form.rating}
-                onChange={ value => form.rating = parseInt(value)}
+                onChange={value => form.rating = parseInt(value)}
             />
             {/* prevent invalid input erros  */}
-               <TextInput 
+            <TextInput
                 label="Description"
                 value={form.description}
-                onChange={ value => form.description = value}
+                onChange={value => form.description = value}
             />
-            <Button 
+            <Button
                 onPress={handleSubmit}>
                 Submit Review
             </Button>

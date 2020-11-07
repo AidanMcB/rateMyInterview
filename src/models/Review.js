@@ -1,6 +1,6 @@
 import { Resource } from '@triframe/core'
 import { Model, string, include, integer }  from '@triframe/scribe'
-import { belongsTo } from '@triframe/scribe/dist/decorators'
+import { belongsTo, session, hidden} from '@triframe/scribe/dist/decorators'
 
 export class Review extends Resource {
 
@@ -20,5 +20,13 @@ export class Review extends Resource {
     
     @belongsTo({a: "Company"})
     company = null
+
+
+    @session
+    static async makeReview(session, reviewData){
+        return await Review.create({...reviewData, userId: session.loggedInUserId })
+    }
+    @hidden
+    static create
 
 }
