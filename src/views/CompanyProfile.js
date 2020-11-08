@@ -14,16 +14,13 @@ import {
   Surface,
   Icon,
 } from "@triframe/designer";
-import ReactMapGL, { Marker, Popup } from 'react-map-gl'
-
-
+import ReactMapGL, { Marker, Popup } from "react-map-gl";
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   const { Company, User } = Api;
   const user = yield User.current();
 
   const { id } = yield useParams();
-
 
   const company = yield Company.read(
     id,
@@ -48,9 +45,8 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     zoom: 13,
   };
 
-
-  let MAPBOX_TOKEN = 'pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA'
-
+  let MAPBOX_TOKEN =
+    "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
 
   const modalView = yield {
     visible: false,
@@ -77,24 +73,32 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         <List.Item title={review.title} description={review.description} />
       ))}
       <Icon name="web">
-        {company.website}
+        <a href={company.website}>Website</a>
       </Icon>
       <Icon name="map-marker">{company.location}</Icon>
-      <Container style={{display: "inline"}}>
+      <Container style={{ display: "inline" }}>
         <ReactMapGL
-        {...viewport}
-          onViewportChange={nextViewport => viewport = nextViewport}
+          {...viewport}
+          onViewportChange={(nextViewport) => (viewport = nextViewport)}
           mapboxApiAccessToken={MAPBOX_TOKEN}
-          mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms" >
+          mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
+        >
           <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
             <Icon name="map-marker" color="white" size={40} />
           </Marker>
         </ReactMapGL>
-        <BubbleButton small={true} style={{ marginLeft: "60%", width: "30%" }} onPress={handleCreateReview}>
+        <BubbleButton
+          small={true}
+          style={{ marginLeft: "60%", width: "30%" }}
+          onPress={handleCreateReview}
+        >
           Write a Review
-      </BubbleButton>
+        </BubbleButton>
       </Container>
-      <Modal visible={modalView.visible} onDismiss={() => modalView.visible = false}>
+      <Modal
+        visible={modalView.visible}
+        onDismiss={() => (modalView.visible = false)}
+      >
         <Container>You must be logged in to write a review!</Container>
       </Modal>
     </Container>
