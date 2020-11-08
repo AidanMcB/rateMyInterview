@@ -3,11 +3,11 @@ import { tether, List, Container, Heading, Subheading, Session, Area } from '@tr
 
 export const CompanyProfile = tether(function* ({ Api, useParams }) {
 
-    const { Company } = Api;
+  const { Company } = Api;
 
-    const { id } = yield useParams()
+  const { id } = yield useParams()
 
-    const company = yield Company.read(id, `
+  const company = yield Company.read(id, `
     *,
     reviews {
         title,
@@ -16,24 +16,24 @@ export const CompanyProfile = tether(function* ({ Api, useParams }) {
     }
     `)
 
-    return (
-        // <Container>
-          <Area inline alignX="center">
-          <Heading>{company.name}</Heading>
-          <Subheading>Company Reviews</Subheading>
-          {company.reviews.map( review => (
-              <List.Item
-            title={review.title}
-            description={review.description}/>
-          ))}
-          <Subheading>
-            {company.location}
-          </Subheading>
-          <Subheading>
-            {company.website}
-          </Subheading>
-          </Area>
-        // </Container>
-      )
+  return (
+    // <Container>
+    <Area alignX="center">
+      <Heading>{company.name}</Heading>
+      <Subheading>Company Reviews</Subheading>
+      {company.reviews.map(review => (
+        <List.Item
+          title={review.title}
+          description={review.description} />
+      ))}
+      <Subheading>
+        {company.location}
+      </Subheading>
+      <Subheading>
+        {company.website}
+      </Subheading>
+    </Area>
+    // </Container>
+  )
 
 })  

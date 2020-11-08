@@ -1,6 +1,21 @@
 /** @format */
 
 import React from "react";
+import { bgImage } from "../assets/myrevImg.jpg";
+import {
+  tether,
+  Avatar,
+  Surface,
+  Section,
+  TextInput,
+  List,
+  Container,
+  Heading,
+  Button,
+  Subheading,
+} from "@triframe/designer";
+
+import React from "react";
 import {
   tether,
   Section,
@@ -23,15 +38,16 @@ export const MainPage = tether(function* ({ Api, redirect }) {
         }
     `);
 
+  console.log(reviews[0].company);
   return (
-    <Container>
-      <Appbar></Appbar>
-      <Heading>Rate My Interview!</Heading>
+    <Container style={{ backgroundColor: "green" }}>
+      <Surface>
+        <Heading size="large">Rate My Interview!</Heading>
+      </Surface>
       {reviews.map((review) => (
         <List.Item
-          key={review.id}
           title={review.title}
-          description={review.descritpion}
+          description={review.description}
           onPress={() => redirect(`/companies/${review.company.id}`)}
         />
       ))}
