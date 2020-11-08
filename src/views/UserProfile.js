@@ -10,38 +10,35 @@ import {
   Surface,
   Icon,
 } from "@triframe/designer";
-import { session } from "@triframe/scribe/dist/decorators";
+import { Card, Modal } from "@triframe/designer/dist/paper";
 
-export const UserProfile = tether(function* ({ Api, useParams }) {
+
+export const UserProfile = tether(function* ({ Api, redirect }) {
     const { User } = Api;
-  
-    const user = yield User.read(session.loggedInUserId)
-    // const users = yield User.list(`
-    // *,
-    // reviews{
-    //     title,
-    //     rating,
-    //     description,
-    //     company{
-    //         name, 
-    //         location,
-    //         website
-    //     }
-    // }
-    // `
-    // )
+    const modalView = yield {visible: false}
+    
+    const user = yield User.current()
   
     return (
       <Container>
       
         <Surface>
           <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
-            {user.name}
+            {user.username}
           </Heading>
         </Surface>
         <Subheading style={{}}>User Profile</Subheading>
         {user.reviews.map((review) => (
-          <List.Item title={review.title} description={review.description} />
+        <div>
+        <Card>
+          <List.Item title={review.title} 
+          description={review.company.name}
+          onPress={() => modalView.visible = true} />
+        </Card>
+        <Modal visible={modalView.visible}>
+            {review.description}
+        </Modal>
+        </div>
         ))}
          {/* <Subheading>{user.reviews.company.location}</Subheading>
          <Icon >

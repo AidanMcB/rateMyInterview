@@ -48,7 +48,19 @@ export class User extends Resource {
     static *current(session){
         return(
             session.loggedInUserId !== null
-                ? yield User.read(session.loggedInUserId)
+                ? yield User.read(session.loggedInUserId,`
+                *,
+                reviews{
+                    title,
+                    rating,
+                    description,
+                    company{
+                        name, 
+                        location,
+                        website
+                    }
+                }
+                `)
                 : null
         )
     }

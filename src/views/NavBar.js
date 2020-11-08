@@ -67,7 +67,7 @@ export const NavBar = tether(function* ({ Api, redirect }) {
        ) : (
         <Button
         style={{ backgroundColor: "black" }}
-        onPress={async () => await redirect("/signup")}
+        onPress={async () => await redirect(`/user/${user.id}`)}
       >
         {user.username}
       </Button>

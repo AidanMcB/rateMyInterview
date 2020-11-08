@@ -15,10 +15,11 @@ import {
   Column,
   Grid,
 } from "@triframe/designer";
+import { session } from "@triframe/scribe/dist/decorators";
 
 export const MainPage = tether(function* ({ Api, redirect }) {
   const { Review } = Api;
-
+  console.log(session.loggedInUserId)
   const reviews = yield Review.list(`
         *,
         company {
