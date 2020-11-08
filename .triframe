@@ -1,1 +1,7 @@
-{"name":"rate-my-interview","platform":"web"}
+{"name":"rate-my-interview","platform":"web",
+"deployments": {
+    "ratemyinterview": {
+      "target": "Heroku",
+      "options": {}
+    }}
+
