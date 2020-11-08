@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, {useState} from "react";
 import {
   tether,
   Button,
@@ -14,12 +14,27 @@ import {
   Surface,
   Icon,
 } from "@triframe/designer";
+import ReactMapGL, {Marker, Popup} from 'react-map-gl'
+
+
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   const { Company, User } = Api;
   const user = yield User.current();
 
   const { id } = yield useParams();
+
+  let viewport = yield {
+   latitude: 39.381266,
+   longitude: -97.922211,
+   width: "80vw",
+   height: "100vh",
+   frameborder: "0",
+   scrolling: "no",
+   marginheight: "0",
+   marginwidth: "0",
+   zoom: 3,
+  };
 
   const company = yield Company.read(
     id,
@@ -32,6 +47,9 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     }
     `
   );
+  
+  
+let REACT_APP_MAPBOX_TOKEN = 'pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA'
 
 
   const modalView = yield {
@@ -48,6 +66,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   };
 
   return (
+    console.log(REACT_APP_MAPBOX_TOKEN),
     <Container>
       {/* /<Area alignX="center"> */}
       <Surface>
@@ -59,10 +78,17 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
       {company.reviews.map((review) => (
         <List.Item title={review.title} description={review.description} />
       ))}
-      <Icon name="map-marker">{company.location}</Icon>
-      <Icon name="web">
+       <Icon name="web">
       {company.website}
       </Icon>
+      <Icon name="map-marker">{company.location}</Icon>
+      <ReactMapGL {...viewport} onViewportChange={nextViewport=> viewport=nextViewport} 
+      mapBoxApiAccessToken={REACT_APP_MAPBOX_TOKEN} 
+      mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms">
+      </ReactMapGL>
+
+     
+      
       <Button small={true} style={{ background: "lightblue"}} onPress={handleCreateReview}>
         Write a Review
       </Button>
