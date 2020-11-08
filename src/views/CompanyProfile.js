@@ -45,7 +45,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     scrolling: "no",
     marginheight: "0",
     marginwidth: "0",
-    zoom: 10,
+    zoom: 13,
   };
 
 
