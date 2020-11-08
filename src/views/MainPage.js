@@ -1,47 +1,34 @@
 import React from 'react'
-import { tether, Section, TextInput, List, Container, Heading, Button } from '@triframe/designer'
+import { bgImage } from '../assets/myrevImg.jpg'
+import { tether, Avatar, Surface, Section, TextInput, List, Container, Heading, Button, Subheading } from '@triframe/designer'
 
 
-export const MainPage = tether(function*({ Api }) {
+export const MainPage = tether(function* ({ Api, redirect }) {
 
-    const { Message } = Api;
+    const { Review } = Api;
 
-    const messages = yield Message.list()
 
-    const form = yield { content: '' }
+    const reviews = yield Review.list(`
+        *,
+        company {
+            *
+        }
+    `)
 
-    const handleSubmit = async () => {
-        await Message.create({ content: form.content })
-        form.content = ''
-    }
-
+    console.log(reviews[0].company)
     return (
-        <Container>
-            <Heading>Message List</Heading>
-            <Section>
-                {messages.map(message => (
-                    <List.Item
-                        key={message.id}
-                        title={message.content}
-                        right={() => 
-                            <Button onPress={() => message.delete()}>
-                                Delete
-                            </Button>
-                        }
-                    />
-                ))}
-            </Section>
-            <Heading>Create Message</Heading>
-            <Section>
-                <TextInput
-                    label="Name"
-                    value={form.content}
-                    onChange={ value => form.content = value }
+
+        <Container style={{backgroundColor: "green"}}>
+            <Surface>
+                <Heading size="large">Rate My Interview!</Heading>
+            </Surface>
+            {reviews.map(review => (
+                <List.Item
+                    title={review.title}
+                    description={review.description}
+                    onPress={() => redirect(`/companies/${review.company.id}`)}
                 />
-                <Button onPress={handleSubmit}>
-                    Create
-                </Button>
-            </Section>
+            ))}
         </Container>
     )
 })  
