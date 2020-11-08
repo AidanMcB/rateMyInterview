@@ -3,7 +3,9 @@
 import React from "react";
 import {
   tether,
+  Button,
   List,
+  Modal,
   Container,
   Heading,
   Subheading,
@@ -13,8 +15,9 @@ import {
   Icon,
 } from "@triframe/designer";
 
-export const CompanyProfile = tether(function* ({ Api, useParams }) {
-  const { Company } = Api;
+export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
+  const { Company, User } = Api;
+  const user = yield User.current();
 
   const { id } = yield useParams();
 
@@ -29,6 +32,20 @@ export const CompanyProfile = tether(function* ({ Api, useParams }) {
     }
     `
   );
+
+
+  const modalView = yield {
+    visible: false,
+  };
+
+  const handleCreateReview = () => {
+    if (user !== null) {
+      redirect("/create-review");
+    } else {
+      modalView.visible = true;
+      console.log(modalView.visible);
+    }
+  };
 
   return (
     <Container>
@@ -47,6 +64,12 @@ export const CompanyProfile = tether(function* ({ Api, useParams }) {
         <Subheading>{company.website}</Subheading>
         {/* </Area> */}
       </Icon>
+      <Button small={true} style={{ background: "lightblue"}} onPress={handleCreateReview}>
+        Write a Review
+      </Button>
+      <Modal visible={modalView.visible} onDismiss={() => modalView.visible = false}>
+        <Container>You must be logged in to write a review!</Container>
+      </Modal>
     </Container>
   );
 });
