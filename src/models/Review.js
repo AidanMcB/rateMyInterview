@@ -9,9 +9,6 @@ export class Review extends Resource {
   @string
   title = "";
 
-  @string
-  title = "";
-
   @integer
   rating = 0;
 
@@ -19,9 +16,5 @@ export class Review extends Resource {
   user = null;
 
   @belongsTo({ a: "Company" })
-  company = null;
-
-  @belongsTo({ a: "User", a: "Company" })
-  user = null;
   company = null;
 }
