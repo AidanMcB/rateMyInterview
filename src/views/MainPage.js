@@ -1,11 +1,7 @@
 /** @format */
-
 import React from "react";
-import { bgImage } from "../assets/myrevImg.jpg";
 import {
   tether,
-  Avatar,
-  Surface,
   Section,
   TextInput,
   List,
@@ -13,9 +9,7 @@ import {
   Heading,
   Button,
   Subheading,
-  Grid,
-  Card,
-  Column,
+  Appbar,
 } from "@triframe/designer";
 
 export const MainPage = tether(function* ({ Api, redirect }) {
