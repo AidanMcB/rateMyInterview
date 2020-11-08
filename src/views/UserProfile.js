@@ -18,7 +18,9 @@ export const UserProfile = tether(function* ({ Api, redirect }) {
     const modalView = yield {visible: false}
     
     const user = yield User.current()
-  
+  if(user == null){
+      return <h1>No User Logged In!</h1>
+  }
     return (
       <Container>
       
