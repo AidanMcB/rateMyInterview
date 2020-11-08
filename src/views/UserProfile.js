@@ -13,14 +13,31 @@ import {
 import { Card, Modal } from "@triframe/designer/dist/paper";
 
 
-export const UserProfile = tether(function* ({ Api, redirect }) {
+export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
     const { User } = Api;
-    const modalView = yield {visible: false}
     
-    const user = yield User.current()
-  if(user == null){
-      return <h1>No User Logged In!</h1>
+    const modalView = yield {visible: false}
+
+    const { id } = yield useParams();
+    
+    const user = yield User.read(id, `
+    *,
+    reviews{
+      title,
+      rating,
+      description,
+      company{
+          name, 
+          location,
+          website
+      }
   }
+  `);
+
+    if(user == null){
+        return <h1>No User Logged In!</h1>
+    }
+
     return (
       <Container>
       

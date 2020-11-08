@@ -59,10 +59,9 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
       {company.reviews.map((review) => (
         <List.Item title={review.title} description={review.description} />
       ))}
-      <Subheading>{company.location}</Subheading>
+      <Icon name="map-marker">{company.location}</Icon>
       <Icon name="web">
-        <Subheading>{company.website}</Subheading>
-        {/* </Area> */}
+      {company.website}
       </Icon>
       <Button small={true} style={{ background: "lightblue"}} onPress={handleCreateReview}>
         Write a Review
