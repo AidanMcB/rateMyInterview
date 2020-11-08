@@ -57,12 +57,21 @@ export const NavBar = tether(function* ({ Api, redirect }) {
           Log Out
         </Button>
       )}
+      {user === null ? (
       <Button
         style={{ backgroundColor: "black" }}
         onPress={async () => await redirect("/signup")}
       >
         Sign Up
       </Button>
+       ) : (
+        <Button
+        style={{ backgroundColor: "black" }}
+        onPress={async () => await redirect("/signup")}
+      >
+        {user.username}
+      </Button>
+       )}
     </Appbar>
   );
 });
