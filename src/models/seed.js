@@ -21,23 +21,32 @@ export const seed = async () => {
 
   let google = await Company.create({
     name: "Google",
-    location: "San Francisco, CA",
+    location:
+      "1600 Amphitheatre Parkway In Mountain View, California, United States",
     website: "google.com",
+    lat: "37.419857",
+    long: "-122.078827",
   });
   let facebook = await Company.create({
     name: "FaceBook",
-    location: "Los Angeles., CA",
+    location: "Menlo Park, California",
     website: "facebook.com",
+    lat: "37.453220",
+    long: "-122.183220",
   });
   let twitter = await Company.create({
     name: "Twitter",
-    location: "Houston, TX",
+    location: "Market Square, 1355 Market St #900, San Francisco",
     website: "twitter.com",
+    lat: "37.776553",
+    long: "-122.417211",
   });
   let github = await Company.create({
     name: "GitHub",
-    location: "Newark, NJ",
+    location: "88 Colin P Kelly Jr St, San Francisco, CA 94107",
     website: "github.com",
+    lat: "37.782440",
+    long: "-122.391188",
   });
 
   let rev1 = await Review.create({
