@@ -34,7 +34,7 @@ export const MainPage = tether(function* ({ Api, redirect }) {
     <Container
       style={{ backgroundColor: "#FFFFFF", padding: "20px", height: "90vh" }}
     >
-      <Surface>
+      <Surface >
         <Heading
           size="large"
           style={{ backgroundColor: "#FF8247", padding: "10px" }}
