@@ -40,14 +40,14 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
     }
 
     return (
-      <Container>
+      <Container style={{ backgroundColor:"#9ba4b4", padding: "20px", height: "90vh" }}>
       
         <Surface>
           <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
             {user.username}
           </Heading>
         </Surface>
-        <Subheading style={{}}>User Profile</Subheading>
+        <Subheading style={{color: "white"}}>Reviews</Subheading>
         {user.reviews.map((review) => (
         <>
         <Card>
