@@ -85,7 +85,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         <Subheading>Reviews:</Subheading>
         <Container>
           {company.reviews.length > 0 ? company.reviews.map((review) => (
-            <Card elevation={10} style={{ marginTop: "10px", width: "50%" }} >
+            <Card key={review.id} elevation={10} style={{ marginTop: "10px", width: "50%" }} >
               <List.Item title={review.title} description={review.description}
                 onPress={() => selected.review = review}
               />
