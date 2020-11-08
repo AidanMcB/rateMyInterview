@@ -14,7 +14,7 @@ import {
   Surface,
   Column,
   Grid,
-  Right
+  Right,
 } from "@triframe/designer";
 import { session } from "@triframe/scribe/dist/decorators";
 
@@ -31,14 +31,13 @@ export const MainPage = tether(function* ({ Api, redirect }) {
     `);
 
   return (
-
     <Container
-      style={{ backgroundColor: "#8ca6a6", padding: "20px", height: "90vh" }}
+      style={{ backgroundColor: "#FFFFFF", padding: "20px", height: "90vh" }}
     >
       <Surface >
         <Heading
           size="large"
-          style={{ backgroundColor: "#00dbc4", padding: "10px" }}
+          style={{ backgroundColor: "#FF570A", padding: "10px" }}
         >
           Rate My Interview!
         </Heading>
@@ -46,13 +45,18 @@ export const MainPage = tether(function* ({ Api, redirect }) {
       <Grid gutter={3} base={3}>
         {reviews.map((review) => (
           <Column key={review.id}>
-            <Card style={{ height: "70px" }}>
+            <Card style={{ height: "70px", display: "flex" }}>
               <List.Item
                 style={{ textOvereflow: "ellipsis" }}
                 title={review.title}
                 description={review.description}
                 right={() => (
-                  <Button onPress={() => redirect(`/user/${review.user.id}`)}>{review.user.username}</Button>
+                  <Button
+                    style={{ backgroundColor: "#420039", padding: "10px" }}
+                    onPress={() => redirect(`/user/${review.user.id}`)}
+                  >
+                    {review.user.username}
+                  </Button>
                 )}
                 onPress={() => redirect(`/companies/${review.company.id}`)}
               ></List.Item>
