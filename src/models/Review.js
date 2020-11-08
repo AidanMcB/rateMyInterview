@@ -1,17 +1,22 @@
 /** @format */
-
 import { Resource } from "@triframe/core";
-import { Model, string, include, integer } from "@triframe/scribe";
-import { belongsTo, session, hidden } from "@triframe/scribe/dist/decorators";
-
-import { Resource } from "@triframe/core";
-import { Model, string, include, integer } from "@triframe/scribe";
+import {
+  Model,
+  string,
+  include,
+  integer,
+  session,
+  hidden,
+} from "@triframe/scribe";
 import { belongsTo } from "@triframe/scribe/dist/decorators";
 
 export class Review extends Resource {
   @include(Model)
   @string
   title = "";
+
+  @string
+  description = "";
 
   @integer
   rating = 0;
