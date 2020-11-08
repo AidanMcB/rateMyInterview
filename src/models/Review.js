@@ -1,32 +1,34 @@
-import { Resource } from '@triframe/core'
-import { Model, string, include, integer }  from '@triframe/scribe'
-import { belongsTo, session, hidden} from '@triframe/scribe/dist/decorators'
+/** @format */
+
+import { Resource } from "@triframe/core";
+import { Model, string, include, integer } from "@triframe/scribe";
+import { belongsTo, session, hidden } from "@triframe/scribe/dist/decorators";
+
+import { Resource } from "@triframe/core";
+import { Model, string, include, integer } from "@triframe/scribe";
+import { belongsTo } from "@triframe/scribe/dist/decorators";
 
 export class Review extends Resource {
+  @include(Model)
+  @string
+  title = "";
 
-    @include(Model)
+  @integer
+  rating = 0;
 
-    @string
-    title = "" 
-    
-    @integer
-    rating = 0
+  @belongsTo({ a: "User" })
+  user = null;
 
-    @string
-    description = ""
+  @belongsTo({ a: "Company" })
+  company = null;
 
-    @belongsTo({a: "User"})
-    user = null
-    
-    @belongsTo({a: "Company"})
-    company = null
-
-
-    @session
-    static async makeReview(session, reviewData){
-        return await Review.create({...reviewData, userId: session.loggedInUserId })
-    }
-    @hidden
-    static create
-
+  @session
+  static async makeReview(session, reviewData) {
+    return await Review.create({
+      ...reviewData,
+      userId: session.loggedInUserId,
+    });
+  }
+  @hidden
+  static create;
 }
