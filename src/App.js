@@ -12,6 +12,7 @@ import { CompanyProfile } from "./views/CompanyProfile";
 
 import { SignUp } from "./views/SignUp";
 import { Login } from "./views/Login";
+import { UserProfile } from "./views/UserProfile";
 
 export default () => (
   <Provider url={process.env.REACT_APP_BACKEND_URL}>
@@ -21,6 +22,7 @@ export default () => (
 
     <Route exact path="/companies" component={CompanyList} />
     <Route exact path="/companies/:id" component={CompanyProfile} />
+    <Route exact path="/user/:id" component={UserProfile} />
 
     <Route exact path="/create-review" component={CreateReview} />
     <Route exact path="/signup" component={SignUp} />
