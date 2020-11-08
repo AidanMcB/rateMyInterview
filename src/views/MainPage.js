@@ -37,7 +37,7 @@ export const MainPage = tether(function* ({ Api, redirect }) {
       <Surface>
         <Heading
           size="large"
-          style={{ backgroundColor: "#FF570A", padding: "10px" }}
+          style={{ backgroundColor: "#FF8247", padding: "10px" }}
         >
           Rate My Interview!
         </Heading>
@@ -45,7 +45,7 @@ export const MainPage = tether(function* ({ Api, redirect }) {
       <Grid gutter={3} base={3}>
         {reviews.map((review) => (
           <Column key={review.id}>
-            <Card style={{ height: "70px", display: "flex" }}>
+            <Card style={{ height: "70px", backgroundColor: "#fffaf0" }}>
               <List.Item
                 style={{ textOvereflow: "ellipsis" }}
                 title={review.title}
