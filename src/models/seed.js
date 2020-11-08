@@ -23,28 +23,28 @@ export const seed = async () => {
     name: "Google",
     location:
       "1600 Amphitheatre Parkway In Mountain View, California, United States",
-    website: "google.com",
+    website: "www.google.com",
     lat: "37.419857",
     long: "-122.078827",
   });
   let facebook = await Company.create({
     name: "FaceBook",
     location: "Menlo Park, California",
-    website: "facebook.com",
+    website: "www.facebook.com",
     lat: "37.453220",
     long: "-122.183220",
   });
   let twitter = await Company.create({
     name: "Twitter",
     location: "Market Square, 1355 Market St #900, San Francisco",
-    website: "twitter.com",
+    website: "www.twitter.com",
     lat: "37.776553",
     long: "-122.417211",
   });
   let github = await Company.create({
     name: "GitHub",
     location: "88 Colin P Kelly Jr St, San Francisco, CA 94107",
-    website: "github.com",
+    website: "www.github.com",
     lat: "37.782440",
     long: "-122.391188",
   });
