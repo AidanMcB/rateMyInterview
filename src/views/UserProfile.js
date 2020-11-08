@@ -9,14 +9,15 @@ import {
   Area,
   Surface,
   Icon,
+  Card,
+  Modal
 } from "@triframe/designer";
-import { Card, Modal } from "@triframe/designer/dist/paper";
 
 
 export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
     const { User } = Api;
     
-    const modalView = yield {visible: false}
+    const selected = yield {review: false}
 
     const { id } = yield useParams();
     
@@ -48,24 +49,22 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
         </Surface>
         <Subheading style={{color: "white"}}>Reviews</Subheading>
         {user.reviews.map((review) => (
-        <div>
+        <>
         <Card>
           <List.Item title={review.title} 
           description={review.company.name}
-          onPress={() => modalView.visible = true}
-          style={{ backgroundColor:"#F1F6F9"}} />
+          onPress={() => selected.review = review} />
         </Card>
-        <Modal visible={modalView.visible}>
-
-            {review.description}
-        </Modal>
-        </div>
+       
+        </>
         ))}
-         {/* <Subheading>{user.reviews.company.location}</Subheading>
-         <Icon >
-           <Subheading>{company.website}</Subheading>
-        
-     </Icon> */}
+     <Modal visible={selected.review} onDismiss={() => selected.review = false}>
+        <Container>
+          <Heading>{selected.review.title}</Heading>
+            <p>{selected.review.rating}/5 Stars</p>
+            {selected.review.description}
+          </Container>
+        </Modal>
       </Container>
     );
   });
