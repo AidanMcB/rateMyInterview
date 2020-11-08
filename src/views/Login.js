@@ -30,7 +30,7 @@ export const Login = tether(function* ({ Api, redirect }) {
                 onPress={ async () => {
                     try{
                     await User.login(form.username, form.password)
-                    redirect('/')
+                    redirect('/main')
                     }
                     catch(error){
                         form.errorMessage = error.message

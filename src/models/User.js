@@ -37,6 +37,12 @@ export class User extends Resource {
         return true
     }
 
+    @session
+    static logout(session){
+        session.loggedInUserId = null
+    }
+    
+
     @stream
     @session
     static *current(session){
