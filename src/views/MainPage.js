@@ -14,19 +14,24 @@ import {
   Surface,
   Column,
   Grid,
+  Right
 } from "@triframe/designer";
 import { session } from "@triframe/scribe/dist/decorators";
 
 export const MainPage = tether(function* ({ Api, redirect }) {
   const { Review } = Api;
-  console.log(session.loggedInUserId)
   const reviews = yield Review.list(`
         *,
         company {
             *
+        },
+        user {
+          *
         }
     `);
+
   return (
+
     <Container
       style={{ backgroundColor: "#8ca6a6", padding: "20px", height: "90vh" }}
     >
@@ -40,12 +45,15 @@ export const MainPage = tether(function* ({ Api, redirect }) {
       </Surface>
       <Grid gutter={3} base={3}>
         {reviews.map((review) => (
-          <Column>
+          <Column key={review.id}>
             <Card style={{ height: "70px" }}>
               <List.Item
                 style={{ textOvereflow: "ellipsis" }}
                 title={review.title}
                 description={review.description}
+                right={() => (
+                  <Button onPress={() => redirect(`/user/${review.user.id}`)}>{review.user.username}</Button>
+                )}
                 onPress={() => redirect(`/companies/${review.company.id}`)}
               ></List.Item>
             </Card>
