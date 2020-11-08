@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import {
   tether,
-  Button,
+  BubbleButton,
   List,
   Modal,
   Container,
@@ -22,31 +22,30 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
 
   const { id } = yield useParams();
 
-  let viewport = yield {
-    latitude: 39.381266,
-    longitude: -97.922211,
-    width: "80vw",
-    height: "100vh",
-    frameborder: "0",
-    scrolling: "no",
-    marginheight: "0",
-    marginwidth: "0",
-    zoom: 3,
-  };
-
   const company = yield Company.read(
     id,
     `
     *,
     reviews {
-        title,
-        description,
-        rating
+      title,
+      description,
+      rating,
     }
     `
   );
+  let viewport = yield {
+    latitude: parseFloat(company.lat),
+    longitude: parseFloat(company.long),
+    width: "30vw",
+    height: "30vh",
+    frameborder: "0",
+    scrolling: "no",
+    marginheight: "0",
+    marginwidth: "0",
+    zoom: 13,
+  };
 
-  let REACT_APP_MAPBOX_TOKEN =
+  let MAPBOX_TOKEN =
     "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
 
   const modalView = yield {
@@ -63,42 +62,45 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   };
 
   return (
-    console.log(REACT_APP_MAPBOX_TOKEN),
-    (
-      <Container>
-        {/* /<Area alignX="center"> */}
-        <Surface>
-          <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
-            {company.name}
-          </Heading>
-        </Surface>
-        <Subheading style={{}}>Company Reviews</Subheading>
-        {company.reviews.map((review) => (
-          <List.Item title={review.title} description={review.description} />
-        ))}
-        <Icon name="web">{company.website}</Icon>
-        <Icon name="map-marker">{company.location}</Icon>
+    <Container>
+      <Surface>
+        <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
+          {company.name}
+        </Heading>
+      </Surface>
+      <Subheading style={{}}>Company Reviews</Subheading>
+      {company.reviews.map((review) => (
+        <List.Item title={review.title} description={review.description} />
+      ))}
+      <Icon name="web">
+        <a href={company.website}>Website</a>
+      </Icon>
+      <Icon name="map-marker">{company.location}</Icon>
+      <Container style={{ display: "inline" }}>
         <ReactMapGL
           {...viewport}
           onViewportChange={(nextViewport) => (viewport = nextViewport)}
-          mapBoxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-          mapStyle="https://api.mapbox.com/tokens/v2/NinjasInPajamas?access_token={mapBoxApiAccessToken}"
-        ></ReactMapGL>
-
-        <Button
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
+        >
+          <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
+            <Icon name="map-marker" color="white" size={40} />
+          </Marker>
+        </ReactMapGL>
+        <BubbleButton
           small={true}
-          style={{ background: "lightblue" }}
+          style={{ marginLeft: "60%", width: "30%" }}
           onPress={handleCreateReview}
         >
           Write a Review
-        </Button>
-        <Modal
-          visible={modalView.visible}
-          onDismiss={() => (modalView.visible = false)}
-        >
-          <Container>You must be logged in to write a review!</Container>
-        </Modal>
+        </BubbleButton>
       </Container>
-    )
+      <Modal
+        visible={modalView.visible}
+        onDismiss={() => (modalView.visible = false)}
+      >
+        <Container>You must be logged in to write a review!</Container>
+      </Modal>
+    </Container>
   );
 });
