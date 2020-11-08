@@ -19,15 +19,14 @@ export const NavBar = tether(function* ({ Api, redirect }) {
   const { User } = Api;
   const user = yield User.current();
 
-
   let handleLogout = async () => {
     try {
-      await redirect('/')
-      await User.logout()
+      await redirect("/");
+      await User.logout();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const modalView = yield {
     visible: false,
   };
@@ -43,9 +42,16 @@ export const NavBar = tether(function* ({ Api, redirect }) {
 
   return (
     <Appbar style={{ backgroundColor: "black" }}>
-      <Button style={{ backgroundColor: "black" }} onPress={async () => await redirect("/")}
-      >Home</Button>
-      <Button style={{ backgroundColor: "black" }} onPress={async () => await redirect('/main')}>
+      <Button
+        style={{ backgroundColor: "black" }}
+        onPress={async () => await redirect("/")}
+      >
+        Home!
+      </Button>
+      <Button
+        style={{ backgroundColor: "black" }}
+        onPress={async () => await redirect("/main")}
+      >
         Reviews
       </Button>
       {user === null ? (
@@ -56,13 +62,10 @@ export const NavBar = tether(function* ({ Api, redirect }) {
           Login
         </Button>
       ) : (
-          <Button
-            style={{ backgroundColor: "black" }}
-            onPress={handleLogout}
-          >
-            Log Out
-          </Button>
-        )}
+        <Button style={{ backgroundColor: "black" }} onPress={handleLogout}>
+          Log Out
+        </Button>
+      )}
       {user === null ? (
         <Button
           style={{ backgroundColor: "black" }}
@@ -71,17 +74,19 @@ export const NavBar = tether(function* ({ Api, redirect }) {
           Sign Up
         </Button>
       ) : (
-          <Button
-            style={{ backgroundColor: "black" }}
-            onPress={async () => await redirect(`/user/${user.id}`)}
-          >
-            {user.username}
-          </Button>
-        )}
-        <Button style={{ backgroundColor: "black" }}
-        onPress={ async () => await redirect('/companies')}>
-          Companies
+        <Button
+          style={{ backgroundColor: "black" }}
+          onPress={async () => await redirect(`/user/${user.id}`)}
+        >
+          {user.username}
         </Button>
+      )}
+      <Button
+        style={{ backgroundColor: "black" }}
+        onPress={async () => await redirect("/companies")}
+      >
+        Companies
+      </Button>
     </Appbar>
   );
 });
