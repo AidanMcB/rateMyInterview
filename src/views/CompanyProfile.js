@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   tether,
   Badge,
+  ToggleButton,
   BubbleButton,
   Card,
   Chip,
@@ -27,6 +28,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   const user = yield User.current();
 
   const { id } = yield useParams();
+  console.log(id)
 
   const company = yield Company.read(
     id,
@@ -62,15 +64,19 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     review: false,
   };
 
+  const deleteButton = yield {
+    visible: false,
+  }
+
   const handleCreateReview = () => {
     if (user !== null) {
-      redirect("/create-review");
+      redirect(`/create-review/${id}`);
     } else {
       modalView.visible = true;
       console.log(modalView.visible);
     }
   };
-
+  // console.log(company.review[0].id)
   return (
     <Container>
       <Surface>
@@ -133,6 +139,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
           <p>{selected.review.rating}/5 Stars</p>
           {selected.review.description}
         </Container>
+        <ToggleButton onPress={() => console.log("delete")} disabled={false} align="right" status="checked" icon="delete"/>
       </Modal>
 
       <Modal

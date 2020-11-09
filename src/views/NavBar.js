@@ -31,14 +31,16 @@ export const NavBar = tether(function* ({ Api, redirect }) {
     visible: false,
   };
 
-  const handleCreateReview = () => {
-    if (user !== null) {
-      redirect("/create-review");
-    } else {
-      modalView.visible = true;
-      console.log(modalView.visible);
-    }
-  };
+  // this wont exist until we have a place to enter what company 
+  // we want on the creat-a-review page
+  // const handleCreateReview = () => {
+  //   if (user !== null) {
+  //     redirect(`/create-review/${id}`);
+  //   } else {
+  //     modalView.visible = true;
+  //     console.log(modalView.visible);
+  //   }
+  // };
 
   return (
     <Appbar style={{ backgroundColor: "black" }}>

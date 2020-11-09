@@ -13,8 +13,9 @@ import {
   Area,
 } from "@triframe/designer";
 
-export const CreateReview = tether(function* ({ Api, useParams, session }) {
-  const { Review, User } = Api;
+
+export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
+  const { Review, User, Company } = Api;
 
   const form = yield {
     title: "",
@@ -23,7 +24,9 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
   };
 
   const { id } = yield useParams();
+  console.log(id)
   const user = yield User.current();
+  const company = yield Company.read(`${id}`)
 
   let handleSubmit = async () => {
     try {
@@ -33,14 +36,17 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
         description: form.description,
         companyId: id,
       });
+      redirect('/main')
     } catch (error) {
       console.log(error);
     }
   };
-
+  if(company === null){
+    return <h1>Error !</h1>
+  }
   return (
     <Container>
-      <Heading>Write a Review</Heading>
+      <Heading>Write a Review for {company.name}</Heading>
       <TextInput
         label="Title"
         value={form.title}
@@ -51,7 +57,7 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
         value={form.rating}
         onChange={(value) => (form.rating = parseInt(value))}
       />
-      {/* prevent invalid input erros  */}
+      {/* prevent invalid input errors */}
       <TextInput
         label="Description"
         value={form.description}
