@@ -1,19 +1,7 @@
 /** @format */
 
 import React from "react";
-import {
-  tether,
-  Section,
-  Drawer,
-  TextInput,
-  List,
-  Modal,
-  Container,
-  Heading,
-  Button,
-  Subheading,
-  Appbar,
-} from "@triframe/designer";
+import { tether, Button, Subheading, Appbar } from "@triframe/designer";
 
 export const NavBar = tether(function* ({ Api, redirect }) {
   const { User } = Api;

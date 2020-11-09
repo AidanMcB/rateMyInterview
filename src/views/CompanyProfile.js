@@ -1,33 +1,28 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
 import {
   tether,
-  Badge,
   BubbleButton,
   Card,
   Chip,
   Caption,
   Divider,
-  HelperText,
   List,
   Modal,
   Container,
   Heading,
   Subheading,
-  Session,
   Area,
   Surface,
   Icon,
 } from "@triframe/designer";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import ReactMapGL, { Marker } from "react-map-gl";
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   const { Company, User } = Api;
   const user = yield User.current();
-
   const { id } = yield useParams();
-
   const company = yield Company.read(
     id,
     `
@@ -79,27 +74,36 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         </Heading>
       </Surface>
       <br />
-      <Divider /><Divider />
+      <Divider />
+      <Divider />
       <Area inline={true} flex={true} style={{ padding: "10px" }}>
         <Container className="company-info-left">
           <Subheading>Reviews:</Subheading>
           <Container>
-            {company.reviews.length > 0 ? company.reviews.map((review) => (
-              <Card key={review.id} elevation={10} style={{ marginTop: "10px", width: "50%" }} >
-                <List.Item title={review.title} description={review.description}
-                  onPress={() => selected.review = review}
-                />
-              </Card>
-            )) : <Caption>This company doesn't have any review's yet</Caption>}
+            {company.reviews.length > 0 ? (
+              company.reviews.map((review) => (
+                <Card
+                  key={review.id}
+                  elevation={10}
+                  style={{ marginTop: "10px", width: "50%" }}
+                >
+                  <List.Item
+                    title={review.title}
+                    description={review.description}
+                    onPress={() => (selected.review = review)}
+                  />
+                </Card>
+              ))
+            ) : (
+              <Caption>This company doesn't have any review's yet</Caption>
+            )}
           </Container>
           <BubbleButton
-            
             style={{ margin: "auto", width: "40%" }}
-            onPress={handleCreateReview}>
+            onPress={handleCreateReview}
+          >
             Write a Review
-        </BubbleButton>
-
-
+          </BubbleButton>
         </Container>
         <Container className="company-info-right">
           <ReactMapGL
@@ -112,8 +116,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
               <Icon name="map-marker" color="white" size={40} />
             </Marker>
           </ReactMapGL>
-          <br/>
-
+          <br />
           <Chip>
             <Icon size={20} name="web">
               <a href={company.website}>Go to {company.name}'s website</a>
@@ -122,19 +125,22 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
           <br />
 
           <Chip>
-            <Icon size={20} name="map-marker">{company.location}</Icon>
+            <Icon size={20} name="map-marker">
+              {company.location}
+            </Icon>
           </Chip>
         </Container>
       </Area>
-
-      <Modal visible={selected.review} onDismiss={() => selected.review = false}>
+      <Modal
+        visible={selected.review}
+        onDismiss={() => (selected.review = false)}
+      >
         <Container>
           <Heading>{selected.review.title}</Heading>
           <p>{selected.review.rating}/5 Stars</p>
           {selected.review.description}
         </Container>
       </Modal>
-
       <Modal
         visible={modalView.visible}
         onDismiss={() => (modalView.visible = false)}

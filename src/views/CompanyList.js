@@ -2,24 +2,13 @@
 
 import React from "react";
 import {
-  Paragraph,
   tether,
   List,
   TextInput,
   Container,
   Heading,
 } from "@triframe/designer";
-import {
-  Section,
-  Button,
-  Subheading,
-  Appbar,
-  Card,
-  Surface,
-  Column,
-  Grid,
-  Right,
-} from "@triframe/designer";
+import { Card, Surface, Column, Grid } from "@triframe/designer";
 
 export const CompanyList = tether(function* ({ Api, redirect }) {
   const { Company } = Api;
@@ -41,7 +30,6 @@ export const CompanyList = tether(function* ({ Api, redirect }) {
     state.companyList = companies.filter((company) =>
       company.name.toLowerCase().includes(state.searchTerm.toLowerCase())
     );
-    // console.log(x)
   };
 
   return (
