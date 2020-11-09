@@ -79,40 +79,29 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         </Heading>
       </Surface>
       <br />
-      <Divider />
-      <Divider />
-      <Container className="company-info-body">
-        <Subheading>Reviews:</Subheading>
-        <Container>
-          {company.reviews.length > 0 ? (
-            company.reviews.map((review) => (
-              <Card elevation={10} style={{ marginTop: "10px", width: "50%" }}>
-                <List.Item
-                  title={review.title}
-                  description={review.description}
-                  onPress={() => (selected.review = review)}
+      <Divider /><Divider />
+      <Area inline={true} flex={true} style={{ padding: "10px" }}>
+        <Container className="company-info-left">
+          <Subheading>Reviews:</Subheading>
+          <Container>
+            {company.reviews.length > 0 ? company.reviews.map((review) => (
+              <Card key={review.id} elevation={10} style={{ marginTop: "10px", width: "50%" }} >
+                <List.Item title={review.title} description={review.description}
+                  onPress={() => selected.review = review}
                 />
               </Card>
-            ))
-          ) : (
-            <Caption>This company doesn't have any review's yet</Caption>
-          )}
+            )) : <Caption>This company doesn't have any review's yet</Caption>}
+          </Container>
+          <BubbleButton
+            
+            style={{ margin: "auto", width: "40%" }}
+            onPress={handleCreateReview}>
+            Write a Review
+        </BubbleButton>
+
+
         </Container>
-
-        <Chip>
-          <Icon size={20} name="web">
-            <a href={company.website}>Go to {company.name}'s website</a>
-          </Icon>
-        </Chip>
-        <br />
-
-        <Chip>
-          <Icon size={20} name="map-marker">
-            {company.location}
-          </Icon>
-        </Chip>
-
-        <Area inline={true} flex={true} style={{ padding: "40px" }}>
+        <Container className="company-info-right">
           <ReactMapGL
             {...viewport}
             onViewportChange={(nextViewport) => (viewport = nextViewport)}
@@ -123,24 +112,22 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
               <Icon name="map-marker" color="white" size={40} />
             </Marker>
           </ReactMapGL>
-          <BubbleButton
-            size={30}
-            style={{
-              margin: "auto",
-              width: "40%",
-              height: "30%",
-              backgroundColor: "#420039",
-            }}
-            onPress={handleCreateReview}
-          >
-            Write a Review
-          </BubbleButton>
-        </Area>
-      </Container>
-      <Modal
-        visible={selected.review}
-        onDismiss={() => (selected.review = false)}
-      >
+          <br/>
+
+          <Chip>
+            <Icon size={20} name="web">
+              <a href={company.website}>Go to {company.name}'s website</a>
+            </Icon>
+          </Chip>
+          <br />
+
+          <Chip>
+            <Icon size={20} name="map-marker">{company.location}</Icon>
+          </Chip>
+        </Container>
+      </Area>
+
+      <Modal visible={selected.review} onDismiss={() => selected.review = false}>
         <Container>
           <Heading>{selected.review.title}</Heading>
           <p>{selected.review.rating}/5 Stars</p>
