@@ -3,7 +3,13 @@
 import React, { useState } from "react";
 import {
   tether,
+  Badge,
   BubbleButton,
+  Card,
+  Chip,
+  Caption,
+  Divider,
+  HelperText,
   List,
   Modal,
   Container,
@@ -37,7 +43,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     latitude: parseFloat(company.lat),
     longitude: parseFloat(company.long),
     width: "30vw",
-    height: "30vh",
+    height: "40vh",
     frameborder: "0",
     scrolling: "no",
     marginheight: "0",
@@ -50,6 +56,10 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
 
   const modalView = yield {
     visible: false,
+  };
+
+  const selected = yield {
+    review: false,
   };
 
   const handleCreateReview = () => {
@@ -68,38 +78,83 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
           {company.name}
         </Heading>
       </Surface>
-      <Subheading style={{}}>Company Reviews</Subheading>
-      {company.reviews.map((review) => (
-        <List.Item title={review.title} description={review.description} />
-      ))}
-      <Icon name="web">
-        <a href={company.website}>Website</a>
-      </Icon>
-      <Icon name="map-marker">{company.location}</Icon>
-      <Container style={{ display: "inline" }}>
-        <ReactMapGL
-          {...viewport}
-          onViewportChange={(nextViewport) => (viewport = nextViewport)}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-          mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
-        >
-          <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
-            <Icon name="map-marker" color="white" size={40} />
-          </Marker>
-        </ReactMapGL>
-        <BubbleButton
-          small={true}
-          style={{ marginLeft: "60%", width: "30%" }}
-          onPress={handleCreateReview}
-        >
-          Write a Review
-        </BubbleButton>
+      <br />
+      <Divider />
+      <Divider />
+      <Container className="company-info-body">
+        <Subheading>Reviews:</Subheading>
+        <Container>
+          {company.reviews.length > 0 ? (
+            company.reviews.map((review) => (
+              <Card elevation={10} style={{ marginTop: "10px", width: "50%" }}>
+                <List.Item
+                  title={review.title}
+                  description={review.description}
+                  onPress={() => (selected.review = review)}
+                />
+              </Card>
+            ))
+          ) : (
+            <Caption>This company doesn't have any review's yet</Caption>
+          )}
+        </Container>
+
+        <Chip>
+          <Icon size={20} name="web">
+            <a href={company.website}>Go to {company.name}'s website</a>
+          </Icon>
+        </Chip>
+        <br />
+
+        <Chip>
+          <Icon size={20} name="map-marker">
+            {company.location}
+          </Icon>
+        </Chip>
+
+        <Area inline={true} flex={true} style={{ padding: "40px" }}>
+          <ReactMapGL
+            {...viewport}
+            onViewportChange={(nextViewport) => (viewport = nextViewport)}
+            mapboxApiAccessToken={MAPBOX_TOKEN}
+            mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
+          >
+            <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
+              <Icon name="map-marker" color="white" size={40} />
+            </Marker>
+          </ReactMapGL>
+          <BubbleButton
+            size={30}
+            style={{
+              margin: "auto",
+              width: "40%",
+              height: "30%",
+              backgroundColor: "#420039",
+            }}
+            onPress={handleCreateReview}
+          >
+            Write a Review
+          </BubbleButton>
+        </Area>
       </Container>
+      <Modal
+        visible={selected.review}
+        onDismiss={() => (selected.review = false)}
+      >
+        <Container>
+          <Heading>{selected.review.title}</Heading>
+          <p>{selected.review.rating}/5 Stars</p>
+          {selected.review.description}
+        </Container>
+      </Modal>
+
       <Modal
         visible={modalView.visible}
         onDismiss={() => (modalView.visible = false)}
       >
-        <Container>You must be logged in to write a review!</Container>
+        <Heading style={{ margin: "auto" }}>
+          You must be logged in to write a review!
+        </Heading>
       </Modal>
     </Container>
   );

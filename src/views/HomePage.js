@@ -23,7 +23,11 @@ export const HomePage = tether(function* ({ Api, redirect }) {
         style={{ width: "40vw", height: "40vh" }}
       ></img>
       <Title style={{ fontFamily: "Arial" }}>Rate My InteRview</Title>
-      <BubbleButton small={true} onPress={() => redirect("/main")}>
+      <BubbleButton
+        style={{ backgroundColor: "#420039" }}
+        small={true}
+        onPress={() => redirect("/main")}
+      >
         See Reviews
       </BubbleButton>
     </Container>
