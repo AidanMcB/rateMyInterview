@@ -32,12 +32,15 @@ export const MainPage = tether(function* ({ Api, redirect }) {
 
   return (
     <Container
-      style={{ backgroundColor: "#FFFFFF", padding: "20px", height: "90vh" }}
+      style={{
+        padding: "20px",
+        height: "90vh",
+      }}
     >
-      <Surface >
+      <Surface style={{ backgroundColor: "#e3f3e8" }}>
         <Heading
           size="large"
-          style={{ backgroundColor: "#FF8247", padding: "10px" }}
+          style={{ backgroundColor: "#00dbc4", padding: "10px" }}
         >
           Rate My Interview!
         </Heading>

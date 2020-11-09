@@ -46,13 +46,19 @@ export const NavBar = tether(function* ({ Api, redirect }) {
         style={{ backgroundColor: "black" }}
         onPress={async () => await redirect("/")}
       >
-        Home!
+        Home
       </Button>
       <Button
         style={{ backgroundColor: "black" }}
         onPress={async () => await redirect("/main")}
       >
         Reviews
+      </Button>
+      <Button
+        style={{ backgroundColor: "black" }}
+        onPress={async () => await redirect("/companies")}
+      >
+        Companies
       </Button>
       {user === null ? (
         <Button
@@ -81,12 +87,6 @@ export const NavBar = tether(function* ({ Api, redirect }) {
           {user.username}
         </Button>
       )}
-      <Button
-        style={{ backgroundColor: "black" }}
-        onPress={async () => await redirect("/companies")}
-      >
-        Companies
-      </Button>
     </Appbar>
   );
 });
