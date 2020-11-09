@@ -19,7 +19,6 @@ export const NavBar = tether(function* ({ Api, redirect }) {
   const { User } = Api;
   const user = yield User.current();
 
-
   let handleLogout = async () => {
     try {
       await redirect('/')

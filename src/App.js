@@ -5,6 +5,8 @@ import { MainPage } from "./views/MainPage";
 import { CreateReview } from "./views/CreateReview";
 
 import { NavBar } from "./views/NavBar";
+import { Footer } from "./views/Footer"
+
 import { HomePage } from "./views/HomePage";
 
 import { CompanyList } from "./views/CompanyList";
