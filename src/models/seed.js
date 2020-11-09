@@ -12,12 +12,18 @@ export const seed = async () => {
   await Review.truncate();
 
   let passwordDigest = await hash("1234", 10);
-  let faizah = await User.create({ username: "Faizah", passwordDigest });
-  let terry = await User.create({ username: "Terry", passwordDigest });
-  let johnny = await User.create({ username: "Johnny", passwordDigest });
-  let francisco = await User.create({ username: "Francisco", passwordDigest });
-  let melike = await User.create({ username: "Melike", passwordDigest });
-  let aidan = await User.create({ username: "Aidan", passwordDigest });
+  let faizah = await User.create({ username: "Faizah Ahsan", passwordDigest });
+  let terry = await User.create({ username: "Terry Smith", passwordDigest });
+  let johnny = await User.create({
+    username: "Johnny McGregor",
+    passwordDigest,
+  });
+  let francisco = await User.create({
+    username: "Francisco Sierra",
+    passwordDigest,
+  });
+  let melike = await User.create({ username: "Melike Kilic", passwordDigest });
+  let aidan = await User.create({ username: "Aidan McBride", passwordDigest });
 
   let google = await Company.create({
     name: "Google",

@@ -59,7 +59,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   };
 
   const selected = yield {
-    review: false
+    review: false,
   };
 
   const handleCreateReview = () => {
@@ -73,7 +73,6 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
 
   return (
     <Container>
-
       <Surface>
         <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
           {company.name}
@@ -107,7 +106,8 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
             {...viewport}
             onViewportChange={(nextViewport) => (viewport = nextViewport)}
             mapboxApiAccessToken={MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms">
+            mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
+          >
             <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
               <Icon name="map-marker" color="white" size={40} />
             </Marker>
@@ -137,10 +137,12 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
 
       <Modal
         visible={modalView.visible}
-        onDismiss={() => (modalView.visible = false)}>
-        <Heading style={{ margin: "auto" }}>You must be logged in to write a review!</Heading>
+        onDismiss={() => (modalView.visible = false)}
+      >
+        <Heading style={{ margin: "auto" }}>
+          You must be logged in to write a review!
+        </Heading>
       </Modal>
-
     </Container>
   );
-})
+});
