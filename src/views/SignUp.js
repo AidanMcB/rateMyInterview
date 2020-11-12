@@ -43,10 +43,10 @@ export const SignUp = tether(function* ({ Api, redirect }) {
                     }
                 }}
                 >Sign Up</Button>
-                </Container>
                 <HelperText type="error" visible={form.errorMessage !== null}>
                     {form.errorMessage}
                 </HelperText>
+                </Container>
         </Container>
     )
 
