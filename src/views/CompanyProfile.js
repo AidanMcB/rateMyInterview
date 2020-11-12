@@ -83,13 +83,10 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     }
   };
 
-  const handleDeleteReview  = async () => {
+  const handleDeleteReview = async () => {
     await selected.review.delete()
     deleteButton.messageView = true
     deleteButton.message = 'This post has been deleted!'
-
-
-
   }
 
   const handleReviewClick = (review) => {
@@ -99,7 +96,11 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     } else {
       deleteButton.disabled = true
     }
+  }
 
+  const handleModalClose = () => {
+    selected.review = false;
+    deleteButton.messageView = false;
   }
 
   return (
@@ -124,7 +125,6 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
             )) : <Caption>This company doesn't have any review's yet</Caption>}
           </Container>
           <BubbleButton
-
             style={{ margin: "auto", width: "40%" }}
             onPress={handleCreateReview}>
             Write a Review
@@ -157,14 +157,15 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         </Container>
       </Area>
 
-      <Modal key={selected.review.id} visible={selected.review} onDismiss={() => selected.review = false}>
+      <Modal key={selected.review.id} visible={selected.review} onDismiss={handleModalClose}>
         <Container>
           <Heading>{selected.review.title}</Heading>
           <p>{selected.review.rating}/5 Stars</p>
           {selected.review.description}
         </Container>
         <ToggleButton onPress={handleDeleteReview} disabled={deleteButton.disabled} align="right" status="checked" icon="delete" />
-        <Snackbar visible={deleteButton.messageView} duration={2000} >
+        <Snackbar
+          visible={deleteButton.messageView} >
           {deleteButton.message}
         </Snackbar>
       </Modal>

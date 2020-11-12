@@ -7,6 +7,7 @@ import {
   List,
   Container,
   Heading,
+  HelperText,
   TextInput,
   Subheading,
   Session,
@@ -23,6 +24,10 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
     description: "",
   };
 
+  const error = yield {
+    message: null,
+  }
+
   const { id } = yield useParams();
   const user = yield User.current();
   const company = yield Company.read(`${id}`)
@@ -37,6 +42,7 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
       });
       redirect('/main')
     } catch (error) {
+      error.message = error
       console.log(error);
     }
   };
@@ -54,9 +60,11 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
       <TextInput
         label="Rating"
         value={form.rating}
-        onChange={(value) => (form.rating = parseInt(value))}
+        onChange={(value) => (form.rating = value)}
       />
-      {/* prevent invalid input errors */}
+      <HelperText type="error" visible={error.message !== null}>
+        {error.message}
+      </HelperText>
       <TextInput
         label="Description"
         value={form.description}
