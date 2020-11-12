@@ -10,6 +10,7 @@ import {
   Chip,
   Caption,
   Divider,
+  Snackbar,
   HelperText,
   List,
   Modal,
@@ -24,11 +25,12 @@ import {
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
+
   const { Company, User } = Api;
+
   const user = yield User.current();
 
   const { id } = yield useParams();
-  console.log(id)
 
   const company = yield Company.read(
     id,
@@ -38,6 +40,9 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
       title,
       description,
       rating,
+      user {
+        *
+      }
     }
     `
   );
@@ -65,7 +70,9 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   };
 
   const deleteButton = yield {
-    visible: false,
+    disabled: true,
+    message: '',
+    messageView: false
   }
 
   const handleCreateReview = () => {
@@ -73,10 +80,28 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
       redirect(`/create-review/${id}`);
     } else {
       modalView.visible = true;
-      console.log(modalView.visible);
     }
   };
-  // console.log(company.review[0].id)
+
+  const handleDeleteReview  = async () => {
+    await selected.review.delete()
+    deleteButton.messageView = true
+    deleteButton.message = 'This post has been deleted!'
+
+
+
+  }
+
+  const handleReviewClick = (review) => {
+    selected.review = review
+    if (selected.review.user.id === user.id) {
+      deleteButton.disabled = false
+    } else {
+      deleteButton.disabled = true
+    }
+
+  }
+
   return (
     <Container>
       <Surface>
@@ -93,18 +118,17 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
             {company.reviews.length > 0 ? company.reviews.map((review) => (
               <Card key={review.id} elevation={10} style={{ marginTop: "10px", width: "50%" }} >
                 <List.Item title={review.title} description={review.description}
-                  onPress={() => selected.review = review}
+                  onPress={() => handleReviewClick(review)}
                 />
               </Card>
             )) : <Caption>This company doesn't have any review's yet</Caption>}
           </Container>
           <BubbleButton
-            
+
             style={{ margin: "auto", width: "40%" }}
             onPress={handleCreateReview}>
             Write a Review
         </BubbleButton>
-
 
         </Container>
         <Container className="company-info-right">
@@ -118,7 +142,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
               <Icon name="map-marker" color="white" size={40} />
             </Marker>
           </ReactMapGL>
-          <br/>
+          <br />
 
           <Chip>
             <Icon size={20} name="web">
@@ -133,13 +157,16 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
         </Container>
       </Area>
 
-      <Modal visible={selected.review} onDismiss={() => selected.review = false}>
+      <Modal key={selected.review.id} visible={selected.review} onDismiss={() => selected.review = false}>
         <Container>
           <Heading>{selected.review.title}</Heading>
           <p>{selected.review.rating}/5 Stars</p>
           {selected.review.description}
         </Container>
-        <ToggleButton onPress={() => console.log("delete")} disabled={false} align="right" status="checked" icon="delete"/>
+        <ToggleButton onPress={handleDeleteReview} disabled={deleteButton.disabled} align="right" status="checked" icon="delete" />
+        <Snackbar visible={deleteButton.messageView} duration={2000} >
+          {deleteButton.message}
+        </Snackbar>
       </Modal>
 
       <Modal

@@ -24,7 +24,6 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
   };
 
   const { id } = yield useParams();
-  console.log(id)
   const user = yield User.current();
   const company = yield Company.read(`${id}`)
 
