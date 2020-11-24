@@ -22,7 +22,8 @@ import {
   Surface,
   Icon,
 } from "@triframe/designer";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, NavigationControl, GeolocateControl } from "react-map-gl";
+
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
 
@@ -52,11 +53,12 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     width: "30vw",
     height: "40vh",
     frameborder: "0",
-    scrolling: "no",
+    scrolling: "yes",
     marginheight: "0",
     marginwidth: "0",
     zoom: 13,
   };
+ 
 
   let MAPBOX_TOKEN =
     "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
@@ -129,7 +131,6 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
             onPress={handleCreateReview}>
             Write a Review
         </BubbleButton>
-
         </Container>
         <Container className="company-info-right">
           <ReactMapGL
@@ -138,6 +139,8 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
             mapboxApiAccessToken={MAPBOX_TOKEN}
             mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
           >
+          <NavigationControl showCompass={true} showZoom={true} />
+          <GeolocateControl />
             <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
               <Icon name="map-marker" color="white" size={40} />
             </Marker>

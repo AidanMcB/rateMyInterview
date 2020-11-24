@@ -24,7 +24,7 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
     description: "",
   };
 
-  const error = yield {
+  const errors = yield {
     message: null,
   }
 
@@ -42,7 +42,7 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
       });
       redirect('/main')
     } catch (error) {
-      error.message = error
+      errors.message = error.message
       console.log(error);
     }
   };
@@ -62,8 +62,8 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
         value={form.rating}
         onChange={(value) => (form.rating = value)}
       />
-      <HelperText type="error" visible={error.message !== null}>
-        {error.message}
+      <HelperText type="error" visible={errors.message !== null}>
+        {errors.message}
       </HelperText>
       <TextInput
         label="Description"
