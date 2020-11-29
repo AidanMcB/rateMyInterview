@@ -4,16 +4,11 @@ import React from "react";
 import {
   tether,
   Button,
-  List,
   Container,
   Heading,
   HelperText,
   TextInput,
-  Subheading,
-  Session,
-  Area,
 } from "@triframe/designer";
-
 
 export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
   const { Review, User, Company } = Api;
@@ -26,11 +21,11 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
 
   const errors = yield {
     message: null,
-  }
+  };
 
   const { id } = yield useParams();
   const user = yield User.current();
-  const company = yield Company.read(`${id}`)
+  const company = yield Company.read(`${id}`);
 
   let handleSubmit = async () => {
     try {
@@ -40,14 +35,14 @@ export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
         description: form.description,
         companyId: id,
       });
-      redirect('/main')
+      redirect("/main");
     } catch (error) {
-      errors.message = error.message
+      errors.message = error.message;
       console.log(error);
     }
   };
-  if(company === null){
-    return <h1>Error !</h1>
+  if (company === null) {
+    return <h1>Error !</h1>;
   }
   return (
     <Container>

@@ -16,9 +16,7 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
   const { User } = Api;
 
   const selected = yield { review: false };
-
   const { id } = yield useParams();
-
   const user = yield User.read(
     id,
     `

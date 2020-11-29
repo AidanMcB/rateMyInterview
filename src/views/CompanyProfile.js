@@ -23,10 +23,9 @@ import {
   Icon,
 } from "@triframe/designer";
 // import ReactMapGL, { Marker, Popup, NavigationControl, GeolocateControl } from "react-map-gl";
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from "mapbox-gl";
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
-
   const { Company, User } = Api;
 
   const user = yield User.current();
@@ -59,148 +58,171 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     zoom: 13,
   };
 
-  mapboxgl.accessToken = 'pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA';
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
   let map = setTimeout(() => {
     new mapboxgl.Map({
-      container: 'map',
+      container: "map",
       style: "mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms",
       center: [viewport.longitude, viewport.latitude],
-      zoom: 13
-    })
-    map.on('load', () => {
-      addPoint()
-    })
-  }, 100)
-  
+      zoom: 13,
+    });
+    map.on("load", () => {
+      addPoint();
+    });
+  }, 100);
 
   const addPoint = () => {
     new mapboxgl.Marker(
-      <div
-        style={{
-          width: '5rem',
-          height: '5rem',
-          borderRadius: '50%',
-          cursor: 'pointer',
-        }} />
+      (
+        <div
+          style={{
+            width: "5rem",
+            height: "5rem",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
+        />
+      )
     )
       .setLngLat([viewport.longitude, viewport.latitude])
       .addTo(map);
   };
 
+  let MAPBOX_TOKEN =
+    "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
 
+  const modalView = yield {
+    visible: false,
+  };
 
-let MAPBOX_TOKEN =
-  "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
+  const selected = yield {
+    review: false,
+  };
 
-const modalView = yield {
-  visible: false,
-};
+  const deleteButton = yield {
+    disabled: true,
+    message: "",
+    messageView: false,
+  };
 
-const selected = yield {
-  review: false,
-};
+  const handleCreateReview = () => {
+    if (user !== null) {
+      redirect(`/create-review/${id}`);
+    } else {
+      modalView.visible = true;
+    }
+  };
 
-const deleteButton = yield {
-  disabled: true,
-  message: '',
-  messageView: false
-  }
+  const handleDeleteReview = async () => {
+    await selected.review.delete();
+    deleteButton.messageView = true;
+    deleteButton.message = "This post has been deleted!";
+  };
 
-const handleCreateReview = () => {
-  if (user !== null) {
-    redirect(`/create-review/${id}`);
-  } else {
-    modalView.visible = true;
-  }
-};
+  const handleReviewClick = (review) => {
+    selected.review = review;
+    if (selected.review.user.id === user.id) {
+      deleteButton.disabled = false;
+    } else {
+      deleteButton.disabled = true;
+    }
+  };
 
-const handleDeleteReview = async () => {
-  await selected.review.delete()
-  deleteButton.messageView = true
-  deleteButton.message = 'This post has been deleted!'
-}
+  const handleModalClose = () => {
+    selected.review = false;
+    deleteButton.messageView = false;
+  };
 
-const handleReviewClick = (review) => {
-  selected.review = review
-  if (selected.review.user.id === user.id) {
-    deleteButton.disabled = false
-  } else {
-    deleteButton.disabled = true
-  }
-}
-
-const handleModalClose = () => {
-  selected.review = false;
-  deleteButton.messageView = false;
-}
-
-return (
-  <Container>
-    <Surface>
-      <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
-        {company.name}
-      </Heading>
-    </Surface>
-    <br />
-    <Divider /><Divider />
-    <Area inline={true} flex={true} style={{ padding: "10px" }}>
-      <Container className="company-info-left">
-        <Subheading>Reviews:</Subheading>
-        <Container>
-          {company.reviews.length > 0 ? company.reviews.map((review) => (
-            <Card key={review.id} elevation={10} style={{ marginTop: "10px", width: "50%" }} >
-              <List.Item title={review.title} description={review.description}
-                onPress={() => handleReviewClick(review)}
-              />
-            </Card>
-          )) : <Caption>This company doesn't have any review's yet</Caption>}
-        </Container>
-        <BubbleButton
-          style={{ margin: "auto", width: "40%" }}
-          onPress={handleCreateReview}>
-          Write a Review
-        </BubbleButton>
-      </Container>
-      <Container className="company-info-right">
-
-        <div id="map" stlye={{ width: "300px", height: "300px" }}></div>
-
-        <br />
-
-        <Chip>
-          <Icon size={20} name="web">
-            <a href={company.website}>Go to {company.name}'s website</a>
-          </Icon>
-        </Chip>
-        <br />
-
-        <Chip>
-          <Icon size={20} name="map-marker">{company.location}</Icon>
-        </Chip>
-      </Container>
-    </Area>
-
-    <Modal key={selected.review.id} visible={selected.review} onDismiss={handleModalClose}>
-      <Container>
-        <Heading>{selected.review.title}</Heading>
-        <p>{selected.review.rating}/5 Stars</p>
-        {selected.review.description}
-      </Container>
-      <ToggleButton onPress={handleDeleteReview} disabled={deleteButton.disabled} align="right" status="checked" icon="delete" />
-      <Snackbar
-        visible={deleteButton.messageView} >
-        {deleteButton.message}
-      </Snackbar>
-    </Modal>
-
-    <Modal
-      visible={modalView.visible}
-      onDismiss={() => (modalView.visible = false)}
-    >
-      <Heading style={{ margin: "auto" }}>
-        You must be logged in to write a review!
+  return (
+    <Container>
+      <Surface>
+        <Heading style={{ backgroundColor: "#00dbc4", padding: "10px" }}>
+          {company.name}
         </Heading>
-    </Modal>
-  </Container>
-);
+      </Surface>
+      <br />
+      <Divider />
+      <Divider />
+      <Area inline={true} flex={true} style={{ padding: "10px" }}>
+        <Container className="company-info-left">
+          <Subheading>Reviews:</Subheading>
+          <Container>
+            {company.reviews.length > 0 ? (
+              company.reviews.map((review) => (
+                <Card
+                  key={review.id}
+                  elevation={10}
+                  style={{ marginTop: "10px", width: "50%" }}
+                >
+                  <List.Item
+                    title={review.title}
+                    description={review.description}
+                    onPress={() => handleReviewClick(review)}
+                  />
+                </Card>
+              ))
+            ) : (
+              <Caption>This company doesn't have any review's yet</Caption>
+            )}
+          </Container>
+          <BubbleButton
+            style={{ margin: "auto", width: "40%" }}
+            onPress={handleCreateReview}
+          >
+            Write a Review
+          </BubbleButton>
+        </Container>
+        <Container className="company-info-right">
+          <div id="map" stlye={{ width: "300px", height: "300px" }}></div>
+
+          <br />
+
+          <Chip>
+            <Icon size={20} name="web">
+              <a href={company.website}>Go to {company.name}'s website</a>
+            </Icon>
+          </Chip>
+          <br />
+
+          <Chip>
+            <Icon size={20} name="map-marker">
+              {company.location}
+            </Icon>
+          </Chip>
+        </Container>
+      </Area>
+
+      <Modal
+        key={selected.review.id}
+        visible={selected.review}
+        onDismiss={handleModalClose}
+      >
+        <Container>
+          <Heading>{selected.review.title}</Heading>
+          <p>{selected.review.rating}/5 Stars</p>
+          {selected.review.description}
+        </Container>
+        <ToggleButton
+          onPress={handleDeleteReview}
+          disabled={deleteButton.disabled}
+          align="right"
+          status="checked"
+          icon="delete"
+        />
+        <Snackbar visible={deleteButton.messageView}>
+          {deleteButton.message}
+        </Snackbar>
+      </Modal>
+
+      <Modal
+        visible={modalView.visible}
+        onDismiss={() => (modalView.visible = false)}
+      >
+        <Heading style={{ margin: "auto" }}>
+          You must be logged in to write a review!
+        </Heading>
+      </Modal>
+    </Container>
+  );
 });

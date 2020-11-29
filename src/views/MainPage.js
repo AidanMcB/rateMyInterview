@@ -2,21 +2,15 @@
 import React from "react";
 import {
   tether,
-  Section,
-  TextInput,
   List,
   Container,
   Heading,
   Button,
-  Subheading,
-  Appbar,
   Card,
   Surface,
   Column,
   Grid,
-  Right,
 } from "@triframe/designer";
-import { session } from "@triframe/scribe/dist/decorators";
 
 export const MainPage = tether(function* ({ Api, redirect }) {
   const { Review } = Api;

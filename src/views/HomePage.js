@@ -1,7 +1,6 @@
 /** @format */
 
 import React from "react";
-import { myrevImg } from "../assets/myrevImg.jpg";
 import { tether, BubbleButton, Title, Container } from "@triframe/designer";
 
 export const HomePage = tether(function* ({ Api, redirect }) {
