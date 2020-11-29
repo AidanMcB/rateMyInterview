@@ -7,10 +7,7 @@ import {
   Container,
   Heading,
   Subheading,
-  Session,
-  Area,
   Surface,
-  Icon,
   Card,
   Modal,
 } from "@triframe/designer";
@@ -39,10 +36,9 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
   `
   );
 
-  if (user == null) {
+  if (user == null ) {
     return <h1>No User Logged In!</h1>;
   }
-
   return (
     <Container style={{ padding: "20px", height: "90vh" }}>
       <Surface>
@@ -52,7 +48,7 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
       </Surface>
       <Subheading>Reviews</Subheading>
       {user.reviews.map((review) => (
-        <>
+        <Container key={review.id}>
           <Card>
             <List.Item
               style={{ backgroundColor: "#fffaf0" }}
@@ -61,7 +57,7 @@ export const UserProfile = tether(function* ({ Api, redirect, useParams }) {
               onPress={() => (selected.review = review)}
             />
           </Card>
-        </>
+        </Container>
       ))}
       <Modal
         visible={selected.review}

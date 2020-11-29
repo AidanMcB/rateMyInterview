@@ -26,7 +26,7 @@ export default () => (
     <Route exact path="/companies/:id" component={CompanyProfile} />
     <Route exact path="/user/:id" component={UserProfile} />
 
-    <Route exact path="/create-review" component={CreateReview} />
+    <Route exact path="/create-review/:id" component={CreateReview} />
     <Route exact path="/signup" component={SignUp} />
     <Route exact path="/login" component={Login} />
   </Provider>

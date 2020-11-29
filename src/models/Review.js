@@ -28,12 +28,8 @@ export class Review extends Resource {
 
   @session
   static async makeReview(session, reviewData) {
-    if (
-      isNaN(parseInt(reviewData.rating)) ||
-      reviewData.rating < 0 ||
-      reviewData.rating > 5
-    ) {
-      throw Error("Rating must be a number from 0 to 5");
+    if(isNaN(parseInt(reviewData.rating)) || reviewData.rating < 0 || reviewData.rating > 5){
+      throw Error("Rating must be a number from 0 to 5")
     }
     return await Review.create({
       ...reviewData,
