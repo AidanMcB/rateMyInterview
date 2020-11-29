@@ -1,28 +1,37 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import {
   tether,
+  Badge,
+  ToggleButton,
   BubbleButton,
   Card,
   Chip,
   Caption,
   Divider,
+  Snackbar,
+  HelperText,
   List,
   Modal,
   Container,
   Heading,
   Subheading,
+  Session,
   Area,
   Surface,
   Icon,
 } from "@triframe/designer";
-import ReactMapGL, { Marker } from "react-map-gl";
+// import ReactMapGL, { Marker, Popup, NavigationControl, GeolocateControl } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 
 export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
   const { Company, User } = Api;
+
   const user = yield User.current();
+
   const { id } = yield useParams();
+
   const company = yield Company.read(
     id,
     `
@@ -31,6 +40,9 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
       title,
       description,
       rating,
+      user {
+        *
+      }
     }
     `
   );
@@ -40,10 +52,41 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     width: "30vw",
     height: "40vh",
     frameborder: "0",
-    scrolling: "no",
+    scrolling: "yes",
     marginheight: "0",
     marginwidth: "0",
     zoom: 13,
+  };
+
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoibmluamFzaW5wYWphbWFzIiwiYSI6ImNraDloYjVuYTAxcDAyeHVzdnhqaW91aHUifQ.2yd2gQjvKBwh6lp8mmmONA";
+  let map = setTimeout(() => {
+    new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms",
+      center: [viewport.longitude, viewport.latitude],
+      zoom: 13,
+    });
+    map.on("load", () => {
+      addPoint();
+    });
+  }, 100);
+
+  const addPoint = () => {
+    new mapboxgl.Marker(
+      (
+        <div
+          style={{
+            width: "5rem",
+            height: "5rem",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
+        />
+      )
+    )
+      .setLngLat([viewport.longitude, viewport.latitude])
+      .addTo(map);
   };
 
   let MAPBOX_TOKEN =
@@ -57,13 +100,38 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
     review: false,
   };
 
+  const deleteButton = yield {
+    disabled: true,
+    message: "",
+    messageView: false,
+  };
+
   const handleCreateReview = () => {
     if (user !== null) {
-      redirect("/create-review");
+      redirect(`/create-review/${id}`);
     } else {
       modalView.visible = true;
-      console.log(modalView.visible);
     }
+  };
+
+  const handleDeleteReview = async () => {
+    await selected.review.delete();
+    deleteButton.messageView = true;
+    deleteButton.message = "This post has been deleted!";
+  };
+
+  const handleReviewClick = (review) => {
+    selected.review = review;
+    if (selected.review.user.id === user.id) {
+      deleteButton.disabled = false;
+    } else {
+      deleteButton.disabled = true;
+    }
+  };
+
+  const handleModalClose = () => {
+    selected.review = false;
+    deleteButton.messageView = false;
   };
 
   return (
@@ -90,7 +158,7 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
                   <List.Item
                     title={review.title}
                     description={review.description}
-                    onPress={() => (selected.review = review)}
+                    onPress={() => handleReviewClick(review)}
                   />
                 </Card>
               ))
@@ -106,17 +174,10 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
           </BubbleButton>
         </Container>
         <Container className="company-info-right">
-          <ReactMapGL
-            {...viewport}
-            onViewportChange={(nextViewport) => (viewport = nextViewport)}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/ninjasinpajamas/ckh9f5vo310o819ma4rrhdpms"
-          >
-            <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
-              <Icon name="map-marker" color="white" size={40} />
-            </Marker>
-          </ReactMapGL>
+          <div id="map" stlye={{ width: "300px", height: "300px" }}></div>
+
           <br />
+
           <Chip>
             <Icon size={20} name="web">
               <a href={company.website}>Go to {company.name}'s website</a>
@@ -131,16 +192,29 @@ export const CompanyProfile = tether(function* ({ Api, useParams, redirect }) {
           </Chip>
         </Container>
       </Area>
+
       <Modal
+        key={selected.review.id}
         visible={selected.review}
-        onDismiss={() => (selected.review = false)}
+        onDismiss={handleModalClose}
       >
         <Container>
           <Heading>{selected.review.title}</Heading>
           <p>{selected.review.rating}/5 Stars</p>
           {selected.review.description}
         </Container>
+        <ToggleButton
+          onPress={handleDeleteReview}
+          disabled={deleteButton.disabled}
+          align="right"
+          status="checked"
+          icon="delete"
+        />
+        <Snackbar visible={deleteButton.messageView}>
+          {deleteButton.message}
+        </Snackbar>
       </Modal>
+
       <Modal
         visible={modalView.visible}
         onDismiss={() => (modalView.visible = false)}

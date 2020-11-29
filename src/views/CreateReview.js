@@ -6,18 +6,27 @@ import {
   Button,
   Container,
   Heading,
+  HelperText,
   TextInput,
 } from "@triframe/designer";
 
-export const CreateReview = tether(function* ({ Api, useParams, session }) {
-  const { Review, User } = Api;
+export const CreateReview = tether(function* ({ Api, useParams, redirect }) {
+  const { Review, User, Company } = Api;
+
   const form = yield {
     title: "",
     rating: "",
     description: "",
   };
+
+  const errors = yield {
+    message: null,
+  };
+
   const { id } = yield useParams();
   const user = yield User.current();
+  const company = yield Company.read(`${id}`);
+
   let handleSubmit = async () => {
     try {
       await Review.makeReview({
@@ -26,14 +35,18 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
         description: form.description,
         companyId: id,
       });
+      redirect("/main");
     } catch (error) {
+      errors.message = error.message;
       console.log(error);
     }
   };
-
+  if (company === null) {
+    return <h1>Error !</h1>;
+  }
   return (
     <Container>
-      <Heading>Write a Review</Heading>
+      <Heading>Write a Review for {company.name}</Heading>
       <TextInput
         label="Title"
         value={form.title}
@@ -42,8 +55,11 @@ export const CreateReview = tether(function* ({ Api, useParams, session }) {
       <TextInput
         label="Rating"
         value={form.rating}
-        onChange={(value) => (form.rating = parseInt(value))}
+        onChange={(value) => (form.rating = value)}
       />
+      <HelperText type="error" visible={errors.message !== null}>
+        {errors.message}
+      </HelperText>
       <TextInput
         label="Description"
         value={form.description}

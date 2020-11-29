@@ -72,10 +72,10 @@ export const Login = tether(function* ({ Api, redirect }) {
         >
           Login
         </Button>
-      </Container>
       <HelperText type="error" visible={form.errorMessage !== null}>
         {form.errorMessage}
       </HelperText>
+      </Container>
     </Container>
   );
 });

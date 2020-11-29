@@ -19,6 +19,8 @@ export class User extends Resource {
         let existingUser = await User.where({ username: username })
         if(existingUser.length > 0){
             throw Error('A usesr with this username already exists')
+        }else if (password.length < 6 ){
+            throw Error('Password must be atleasy 6 characters long')
         }
         let passwordDigest = await hash(password, 10)
         return User.create({ username: username, passwordDigest: passwordDigest })
