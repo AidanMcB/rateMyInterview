@@ -1,5 +1,2 @@
-﻿# rate-my-interview
-# rate-my-interview
-# Rate-My-Interview
-‣慲整祍湉整癲敩੷
-Ninjas in pajamas
+# Rate-My-InteRview by 
+### Ninjas in pajamas

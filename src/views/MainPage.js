@@ -1,34 +1,72 @@
-import React from 'react'
-import { bgImage } from '../assets/myrevImg.jpg'
-import { tether, Avatar, Surface, Section, TextInput, List, Container, Heading, Button, Subheading } from '@triframe/designer'
-
+/** @format */
+import React from "react";
+import {
+  tether,
+  Section,
+  TextInput,
+  List,
+  Container,
+  Heading,
+  Button,
+  Subheading,
+  Appbar,
+  Card,
+  Surface,
+  Column,
+  Grid,
+  Right,
+} from "@triframe/designer";
+import { session } from "@triframe/scribe/dist/decorators";
 
 export const MainPage = tether(function* ({ Api, redirect }) {
-
-    const { Review } = Api;
-
-
-    const reviews = yield Review.list(`
+  const { Review } = Api;
+  const reviews = yield Review.list(`
         *,
         company {
             *
+        },
+        user {
+          *
         }
-    `)
+    `);
 
-    console.log(reviews[0].company)
-    return (
-
-        <Container style={{backgroundColor: "green"}}>
-            <Surface>
-                <Heading size="large">Rate My Interview!</Heading>
-            </Surface>
-            {reviews.map(review => (
-                <List.Item
-                    title={review.title}
-                    description={review.description}
-                    onPress={() => redirect(`/companies/${review.company.id}`)}
-                />
-            ))}
-        </Container>
-    )
-})  
+  return (
+    <Container
+      style={{
+        padding: "20px",
+        height: "90vh",
+      }}
+    >
+      <Surface style={{ backgroundColor: "#e3f3e8" }}>
+        <Heading
+          size="large"
+          style={{ backgroundColor: "#00dbc4", padding: "10px" }}
+        >
+          Rate My Interview!
+        </Heading>
+      </Surface>
+      <Grid gutter={3} base={3}>
+        {reviews.map((review) => (
+          <Column key={review.id}>
+            <Card style={{ height: "70px", backgroundColor: "#fffaf0" }}>
+              <List.Item
+                style={{ textOvereflow: "ellipsis" }}
+                title={review.title}
+                description={review.description}
+                right={() => (
+                  <Button
+                    style={{ backgroundColor: "#420039", padding: "10px" }}
+                    onPress={() => redirect(`/user/${review.user.id}`)}
+                  >
+                    {review.user.username}
+                  </Button>
+                )}
+                onPress={() => redirect(`/companies/${review.company.id}`)}
+              ></List.Item>
+            </Card>
+          </Column>
+        ))}
+      </Grid>
+    </Container>
+  );
+});
